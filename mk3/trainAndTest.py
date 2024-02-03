@@ -2,7 +2,7 @@ import keras
 import os
 from keras import layers, Model
 import tensorflow as tf
-from Net2 import *
+from Net3 import *
 from PIL import Image
 import numpy as np
 from TextProcesser import TextProcesser
@@ -25,7 +25,7 @@ EPOCHS = 20
 
 # replace with path to your processed data
 DATA_DIR = '/home/stud/ge42nog/projects/processed_data/formula_images_processed/'
-CHECKPOINT_PATH = '/home/stud/ge42nog/projects/pix2tex/net_saves/save1'
+CHECKPOINT_PATH = '/home/stud/ge42nog/projects/pix2tex/mk3/net_saves/save2'
 
 # load data
 train = np.load('/home/stud/ge42nog/projects/pix2tex/data/train_buckets.npy', allow_pickle=True)[0]
@@ -127,19 +127,6 @@ model.compile(
     metrics=[masked_loss, masked_acc],
 )
 
-def start_training():
-    save_callback = keras.callbacks.ModelCheckpoint(CHECKPOINT_PATH, save_weights_only=True, save_best_only=True, monitor='val_masked_acc', mode='max')
-    eval_list = []
-    for e in range(EPOCHS):
-        complete_test_ds.shuffle(BUFFER_SIZE)
-        model.fit(complete_train_ds.shard(4,0), epochs=1)
-        model.fit(complete_train_ds.shard(4,1), epochs=1)
-        model.fit(complete_train_ds.shard(4,2), epochs=1)
-        model.fit(complete_train_ds.shard(4,3), epochs=1, validation_data=complete_validate_ds, callbacks=[save_callback])
-        eval_list.append(model.evaluate(complete_validate_ds))
-        print('Epoch: ', e, 'done')
-
-    np.save('Net2/eval_list.npy', np.array(eval_list))
 
 def simple_training():
     print(complete_train_ds.element_spec)
@@ -147,23 +134,10 @@ def simple_training():
     model.fit(complete_train_ds, epochs=20, validation_data=complete_validate_ds, callbacks=[save_callback])
 
 
-def test_model():
-    #model.load_weights('/home/stud/ge42nog/projects/im2latex_public/Net1/save3')
-    complete_validate_ds.shuffle(BUFFER_SIZE)
-    for (i,j),k in complete_validate_ds.take(2):
-        input_image = tf.expand_dims(i[2], 0)
-        pred = model.decompile(input_image)
-        plt.imshow(input_image[0,:,:,:], cmap='gray_r')
-        plt.show()
-        final_string = [x.decode('utf-8') for x in pred[0].numpy()]
-        print(final_string) 
-        print(k[2]) 
-
-
 def test_dataset():
     for (i,j), k in complete_train_ds.take(10):
         print(i.shape, j.shape, k.shape)
-        #x = model((i,j))
+        x = model((i,j))
         print(i.numpy().max())
         print(x.shape)
 
@@ -178,7 +152,6 @@ def debugging():
         attention_output, scores = model.Decoder.return_after_attention(context, input_formula)
         print(attention_output.shape, scores)
 
-#debugging()
 
 if __name__ == '__main__':
     simple_training()

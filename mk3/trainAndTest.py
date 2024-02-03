@@ -135,16 +135,16 @@ def simple_training():
 
 
 def test_dataset():
-    for (i,j), k in complete_train_ds.take(10):
+    for (i,j), k in complete_train_ds.take(10): # type: ignore
         print(i.shape, j.shape, k.shape)
         x = model((i,j))
         print(i.numpy().max())
-        print(x.shape)
+        print(x.shape) # type: ignore
 
 
 def debugging():
     complete_validate_ds.skip(3000)
-    for (i,j),k in validate_ds_list[7].take(5):
+    for (i,j),k in validate_ds_list[7].take(5): # type: ignore
         input_image = tf.expand_dims(i[6], 0)
         input_formula = tf.expand_dims(j[6], 0)
         context = model.return_context(input_image)

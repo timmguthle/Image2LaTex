@@ -5,6 +5,8 @@ This is an encoder-decoder based neural network to convert images of mathematica
 
 The implementation is based on [What You Get Is What You See: A Visual Markup Decompiler](http://arxiv.org/pdf/1609.04938v1.pdf) by HarvardNLP.
 
+The used Dataset can be found [here](https://im2markup.yuntiandeng.com/data/)
+
 ## Sample Results
 An example from the validation set:
 

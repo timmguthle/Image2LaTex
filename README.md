@@ -1,5 +1,5 @@
 
-# Pix 2 Tex!
+# Image2LaTex
 
 This is an encoder-decoder based neural network to convert images of mathematical expressions into the corresponding LaTeX code. Because this system acts as an inverse of the LaTeX compiler, one could call it a decompiler.
 

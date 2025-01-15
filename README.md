@@ -14,3 +14,7 @@ An example from the validation set:
 ![Example](/data/example.png)
 
 Examples of the attention mechanism can be found in the `test_mk3.ipynb` notebook.
+
+## About the version 
+
+this current state works with tensorflow 2.10 and python 3.10.8 (see requirements.txt for all package versions). A newer version of tensorflow does not support loading the saves in the format they currently are plus some additional errors while saving and loading the model. I recommend using this version.

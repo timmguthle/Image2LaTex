@@ -27,4 +27,9 @@ class TextProcesser:
         latex_vocab_size = len(latex_vocab)
 
         return latex_vocab, latex_vocab_size
+    
+    def Id_tensor_to_string(self, input_tensor):
+        text = tf.strings.reduce_join(self.id_to_word(input_tensor), axis=-1, separator=' ')
+        return text.numpy().decode('utf-8') # return type is string
+
 
